@@ -180,7 +180,8 @@ export default function Sidebar() {
       </AnimatePresence>
 
       {/* ── MOBILE BOTTOM NAV ── */}
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-2 py-2 bg-[#12121a] border-t border-[#1e1e2e]"
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-2 py-2 bg-[#12121a] border-t border-[#1e1e2e]">
+        {navItems.map(({ icon: Icon, label }) => (
           <button
             key={label}
             onClick={() => setActive(label)}
