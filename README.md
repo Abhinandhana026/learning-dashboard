@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LearnSpace — Next-Gen Learning Dashboard
 
-## Getting Started
+A high-fidelity student dashboard built for the Frontend Intern Challenge, featuring live Supabase data, Framer Motion animations, and a fully responsive Bento Grid layout.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: Next.js 16 (App Router)
+- **Database**: Supabase (PostgreSQL)
+- **Styling**: Tailwind CSS v4
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Bento Grid layout with staggered entrance animations
+- Live course data fetched from Supabase via Server Components
+- Animated progress bars per course card
+- Collapsible sidebar with `layoutId` micro-interactions
+- Contribution-style activity graph
+- Skeleton loaders via React Suspense
+- Fully responsive — desktop, tablet, and mobile
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture
 
-## Learn More
+### Server / Client split
 
-To learn more about Next.js, take a look at the following resources:
+Data fetching happens exclusively in Server Components. `CoursesGrid` in `app/page.tsx` is an async Server Component that calls Supabase using `createServerClient` from `@supabase/ssr` — this runs only on the server, keeping credentials secure and enabling streaming via React Suspense.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All interactive UI (sidebar collapse, animations, hover states) lives in Client Components marked with `'use client'`. The boundary is deliberate: serv

@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { createSupabaseServerClient } from '@/lib/supabase'
 import { Suspense } from 'react'
 import Sidebar from '@/components/Sidebar'
 import HeroTile from '@/components/HeroTile'
@@ -9,6 +9,8 @@ import BentoGrid from '@/components/BentoGrid'
 import type { Course } from '@/types'
 
 async function CoursesGrid() {
+  const supabase = await createSupabaseServerClient()
+
   const { data, error } = await supabase
     .from('courses')
     .select('*')
@@ -24,8 +26,7 @@ async function CoursesGrid() {
 
   return (
     <>
-     
-        {data.map((course, index) => (
+      {data.map((course, index) => (
         <CourseCard key={course.id} course={course} index={index} />
       ))}
     </>
