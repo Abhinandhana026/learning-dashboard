@@ -1,72 +1,93 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Flame, Trophy, Clock } from 'lucide-react'
+import { Flame, Clock, Zap } from 'lucide-react'
 import { itemVariants } from './BentoGrid'
 
 function getGreeting() {
   const hour = new Date().getHours()
-  if (hour < 12) return 'Good morning 🌅'
-  if (hour < 17) return 'Good afternoon ☀️'
-  return 'Good evening 🌙'
+  if (hour < 12) return { text: 'Good morning', emoji: '🌅' }
+  if (hour < 17) return { text: 'Good afternoon', emoji: '☀️' }
+  return { text: 'Good evening', emoji: '🌙' }
 }
 
 export default function HeroTile({ courseCount = 0 }: { courseCount?: number }) {
+  const greeting = getGreeting()
+
   return (
     <motion.article
       variants={itemVariants}
-      whileHover={{ scale: 1.005 }}
+      whileHover={{ scale: 1.008 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="relative rounded-2xl overflow-hidden border border-[#1e1e2e] bg-[#12121a] p-8 md:p-10"
+      className="relative rounded-3xl overflow-hidden border border-[#1f1f2e] bg-[#16161f] p-8 md:p-10 group"
+      style={{ minHeight: '220px' }}
     >
-      {/* background gradients - more pronounced */}
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-900/40 via-transparent to-indigo-900/40 pointer-events-none" />
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-violet-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-16 -left-16 w-72 h-72 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+      {/* animated mesh background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-20"
+          style={{ background: 'radial-gradient(circle, #7c5cfc 0%, transparent 70%)' }} />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-15"
+          style={{ background: 'radial-gradient(circle, #5b8df6 0%, transparent 70%)' }} />
+        <div className="absolute top-1/2 left-1/3 w-64 h-64 rounded-full opacity-10"
+          style={{ background: 'radial-gradient(circle, #e040b5 0%, transparent 70%)' }} />
+        {/* grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: 'linear-gradient(#7c5cfc 1px, transparent 1px), linear-gradient(90deg, #7c5cfc 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
+          }} />
+      </div>
+
+      {/* hover border glow */}
+      <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ boxShadow: 'inset 0 0 0 1px rgba(124, 92, 252, 0.5)' }} />
 
       <div className="relative z-10 flex flex-col gap-6">
-
-        {/* top row: text + badge */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-slate-400 text-sm tracking-wide">{getGreeting()}</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
+        <div className="flex items-start justify-between gap-6">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">{greeting.emoji}</span>
+              <span className="text-[#8888aa] text-sm font-medium tracking-wide">{greeting.text}</span>
+            </div>
+            <h1 className="font-display text-4xl md:text-5xl font-800 text-[#f0f0ff] tracking-tight leading-none">
               Welcome back,{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">
+              <span style={{
+                background: 'linear-gradient(135deg, #7c5cfc 0%, #e040b5 50%, #5b8df6 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
                 Abhi
               </span>
             </h1>
-            <p className="text-slate-400 text-sm mt-1">
-              You&apos;re making great progress. Keep it up!
+            <p className="text-[#8888aa] text-sm leading-relaxed max-w-md">
+              You&apos;re on a roll — keep pushing and finish strong today.
             </p>
           </div>
 
-          <div className="flex flex-col items-center justify-center w-16 h-16 rounded-2xl bg-violet-500/10 border border-violet-500/20 shrink-0 gap-1">
-            <Trophy className="w-5 h-5 text-violet-400" />
-            <span className="text-violet-300 text-xs font-bold">Lv.7</span>
+          {/* level badge */}
+          <div className="shrink-0 flex flex-col items-center justify-center w-18 h-18 rounded-2xl border border-[#2a2a3e] gap-1 px-4 py-3"
+            style={{ background: 'linear-gradient(135deg, rgba(124,92,252,0.15), rgba(91,141,246,0.15))' }}>
+            <span className="font-display text-2xl font-bold text-[#7c5cfc]">7</span>
+            <span className="text-[10px] text-[#8888aa] uppercase tracking-widest font-medium">Level</span>
           </div>
         </div>
 
-        {/* divider */}
-        <div className="h-px bg-gradient-to-r from-violet-500/20 via-indigo-500/20 to-transparent" />
-
-        {/* stats row */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2.5 bg-orange-500/10 border border-orange-500/20 rounded-full px-5 py-2.5">
-            <Flame className="w-4 h-4 text-orange-400" />
-            <span className="text-orange-300 text-sm font-semibold">12 Day Streak</span>
-          </div>
-          <div className="flex items-center gap-2.5 bg-violet-500/10 border border-violet-500/20 rounded-full px-5 py-2.5">
-            <span className="text-violet-300 text-sm font-semibold">
-              {courseCount} Active Course{courseCount !== 1 ? 's' : ''}
-            </span>
-          </div>
-          <div className="flex items-center gap-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-5 py-2.5">
-            <Clock className="w-4 h-4 text-indigo-400" />
-            <span className="text-indigo-300 text-sm font-semibold">24h This Week</span>
-          </div>
+        {/* stats pills */}
+        <div className="flex flex-wrap gap-3">
+          {[
+            { icon: Flame, label: '12 Day Streak', color: '#f97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.25)' },
+            { icon: Zap, label: `${courseCount} Active Courses`, color: '#7c5cfc', bg: 'rgba(124,92,252,0.1)', border: 'rgba(124,92,252,0.25)' },
+            { icon: Clock, label: '24h This Week', color: '#5b8df6', bg: 'rgba(91,141,246,0.1)', border: 'rgba(91,141,246,0.25)' },
+          ].map(({ icon: Icon, label, color, bg, border }) => (
+            <div key={label}
+              className="flex items-center gap-2.5 rounded-full px-5 py-2.5 text-sm font-medium"
+              style={{ background: bg, border: `1px solid ${border}`, color }}>
+              <Icon className="w-3.5 h-3.5" />
+              {label}
+            </div>
+          ))}
         </div>
-
       </div>
     </motion.article>
   )

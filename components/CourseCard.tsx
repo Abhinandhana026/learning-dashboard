@@ -15,21 +15,14 @@ const iconMap: Record<string, React.ReactNode> = {
   Layers: <Layers className="w-5 h-5" />,
 }
 
-const cardGradients = [
-  'from-violet-900/20 to-indigo-900/20',
-  'from-indigo-900/20 to-blue-900/20',
-  'from-fuchsia-900/20 to-violet-900/20',
-  'from-blue-900/20 to-cyan-900/20',
+const cardThemes = [
+  { gradient: 'from-violet-600/20 via-purple-600/10 to-transparent', glow: '#7c5cfc', icon: 'rgba(124,92,252,0.15)', iconBorder: 'rgba(124,92,252,0.3)', iconColor: '#7c5cfc', bar: 'linear-gradient(90deg, #7c5cfc, #a78bfa)' },
+  { gradient: 'from-blue-600/20 via-indigo-600/10 to-transparent', glow: '#5b8df6', icon: 'rgba(91,141,246,0.15)', iconBorder: 'rgba(91,141,246,0.3)', iconColor: '#5b8df6', bar: 'linear-gradient(90deg, #5b8df6, #93c5fd)' },
+  { gradient: 'from-pink-600/20 via-fuchsia-600/10 to-transparent', glow: '#e040b5', icon: 'rgba(224,64,181,0.15)', iconBorder: 'rgba(224,64,181,0.3)', iconColor: '#e040b5', bar: 'linear-gradient(90deg, #e040b5, #f472b6)' },
+  { gradient: 'from-cyan-600/20 via-teal-600/10 to-transparent', glow: '#22d3ee', icon: 'rgba(34,211,238,0.15)', iconBorder: 'rgba(34,211,238,0.3)', iconColor: '#22d3ee', bar: 'linear-gradient(90deg, #22d3ee, #67e8f9)' },
 ]
 
-const glowColors = [
-  'rgba(139, 92, 246, 0.4)',
-  'rgba(99, 102, 241, 0.4)',
-  'rgba(217, 70, 239, 0.4)',
-  'rgba(59, 130, 246, 0.4)',
-]
-
-function getStatusLabel(progress: number) {
+function getStatus(progress: number) {
   if (progress >= 80) return { emoji: '🔥', text: 'Almost done!' }
   if (progress >= 50) return { emoji: '⚡', text: 'Halfway there' }
   return { emoji: '🚀', text: 'Just getting started' }
@@ -37,68 +30,76 @@ function getStatusLabel(progress: number) {
 
 export default function CourseCard({ course, index }: { course: Course; index: number }) {
   const [displayProgress, setDisplayProgress] = useState(0)
+  const theme = cardThemes[index % cardThemes.length]
+  const status = getStatus(course.progress)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDisplayProgress(course.progress)
-    }, 300 + index * 120)
+    const timer = setTimeout(() => setDisplayProgress(course.progress), 400 + index * 150)
     return () => clearTimeout(timer)
   }, [course.progress, index])
-
-  const gradient = cardGradients[index % cardGradients.length]
-  const glow = glowColors[index % glowColors.length]
-  const status = getStatusLabel(course.progress)
 
   return (
     <motion.article
       variants={itemVariants}
-      whileHover={{ scale: 1.03, y: -4 }}
+      whileHover={{ scale: 1.04, y: -6 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="relative rounded-2xl overflow-hidden border border-[#1e1e2e] bg-[#12121a] p-6 flex flex-col gap-5 group cursor-pointer min-h-[180px]"
+      className={`relative rounded-2xl overflow-hidden border border-[#1f1f2e] bg-[#16161f] p-6 flex flex-col gap-5 group cursor-pointer`}
+      style={{ minHeight: '200px' }}
     >
-      {/* background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} pointer-events-none`} />
+      {/* card gradient bg */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} pointer-events-none`} />
 
-      {/* grain texture */}
-      <div
-        className="absolute inset-0 opacity-20 pointer-events-none"
+      {/* noise texture */}
+      <div className="absolute inset-0 opacity-[0.15] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E")`,
-        }}
-      />
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+        }} />
 
       {/* hover glow border */}
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-        style={{ boxShadow: `inset 0 0 0 1px ${glow}` }}
+      <motion.div
+        className="absolute inset-0 rounded-2xl pointer-events-none"
+        initial={{ opacity: 0 }}
+        whileHover={{ opacity: 1 }}
+        style={{ boxShadow: `inset 0 0 0 1px ${theme.glow}66, 0 0 30px ${theme.glow}22` }}
       />
 
-      {/* top glow blob */}
-      <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none bg-violet-500" />
+      {/* top corner glow */}
+      <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"
+        style={{ background: theme.glow }} />
 
       {/* icon + title */}
-      <div className="relative z-10 flex items-center gap-4">
-        <div className="w-11 h-11 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
+      <div className="relative z-10 flex items-start gap-4">
+        <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border"
+          style={{ background: theme.icon, borderColor: theme.iconBorder, color: theme.iconColor }}>
           {iconMap[course.icon_name] ?? <BookOpen className="w-5 h-5" />}
         </div>
-        <h3 className="text-white font-semibold text-sm leading-snug">{course.title}</h3>
+        <div className="flex flex-col gap-0.5 pt-0.5">
+          <h3 className="font-display text-sm font-semibold text-[#f0f0ff] leading-snug">{course.title}</h3>
+          <p className="text-xs text-[#44445a]">In progress</p>
+        </div>
       </div>
 
-      {/* progress */}
-      <div className="relative z-10 flex flex-col gap-3 mt-auto">
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">Progress</span>
-          <span className="text-sm text-violet-400 font-bold">{course.progress}%</span>
+      {/* progress section */}
+      <div className="relative z-10 flex flex-col gap-2.5 mt-auto">
+        <div className="flex justify-between items-baseline">
+          <span className="text-xs text-[#8888aa] uppercase tracking-widest font-medium">Progress</span>
+          <span className="font-display text-lg font-bold" style={{ color: theme.iconColor }}>
+            {course.progress}%
+          </span>
         </div>
-        <div className="w-full h-2 bg-[#1e1e2e] rounded-full overflow-hidden">
+
+        {/* progress bar track */}
+        <div className="w-full h-1.5 rounded-full overflow-hidden" style={{ background: '#1f1f2e' }}>
           <motion.div
-            className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-500"
+            className="h-full rounded-full"
+            style={{ background: theme.bar }}
             initial={{ width: '0%' }}
             animate={{ width: `${displayProgress}%` }}
-            transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 + index * 0.12 }}
+            transition={{ duration: 1.4, ease: [0.34, 1.56, 0.64, 1], delay: 0.3 + index * 0.15 }}
           />
         </div>
-        <p className="text-xs text-slate-400 flex items-center gap-1.5">
+
+        <p className="text-xs text-[#8888aa] flex items-center gap-1.5">
           <span>{status.emoji}</span>
           <span>{status.text}</span>
         </p>
