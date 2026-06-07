@@ -55,19 +55,27 @@ function CoursesSkeleton() {
 
 export default function DashboardPage() {
   return (
-    <div className="flex min-h-screen" style={{ background: 'var(--bg-base)' }}>
+    <div className="flex min-h-screen" style={{ background: '#060608' }}>
       <Sidebar />
-      <main className="flex-1 min-w-0 pt-16 pb-24 px-5 md:pt-10 md:pb-10 md:px-10 overflow-y-auto">
-        <div className="max-w-6xl mx-auto">
+      <main
+        className="flex-1 min-w-0 overflow-y-auto pt-16 pb-24 md:pt-10 md:pb-10"
+        style={{
+          paddingLeft: 'clamp(1.25rem, 3vw, 2.5rem)',
+          paddingRight: 'clamp(1.25rem, 3vw, 2.5rem)',
+        }}
+      >
+        <div className="max-w-5xl mx-auto">
           <BentoGrid>
 
-            <Suspense fallback={<SkeletonCard className="h-[240px]" />}>
+            <Suspense fallback={<SkeletonCard className="h-[200px]" />}>
               <HeroSection />
             </Suspense>
 
             <section className="flex flex-col gap-4">
-              <h2 className="text-xs font-semibold uppercase tracking-widest px-1"
-                style={{ color: 'var(--text-muted)' }}>
+              <h2
+                className="text-xs font-semibold uppercase tracking-widest px-1"
+                style={{ color: '#44445a' }}
+              >
                 Active Courses
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
