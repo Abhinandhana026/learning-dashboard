@@ -20,9 +20,9 @@ const intensityClass = (value: number) => {
 }
 
 const stats = [
-  { icon: Zap, label: 'Current Streak', value: '12 days', color: 'text-orange-400' },
-  { icon: Target, label: 'Lessons Done', value: '84', color: 'text-violet-400' },
-  { icon: Award, label: 'Certificates', value: '3', color: 'text-indigo-400' },
+  { icon: Zap, label: 'Current Streak', value: '12 days', color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' },
+  { icon: Target, label: 'Lessons Done', value: '84', color: 'text-violet-400', bg: 'bg-violet-500/10 border-violet-500/20' },
+  { icon: Award, label: 'Certificates', value: '3', color: 'text-indigo-400', bg: 'bg-indigo-500/10 border-indigo-500/20' },
 ]
 
 export default function ActivityTile() {
@@ -31,7 +31,7 @@ export default function ActivityTile() {
       variants={itemVariants}
       whileHover={{ scale: 1.005 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="relative rounded-2xl overflow-hidden border border-[#1e1e2e] bg-[#12121a] p-6 group"
+      className="relative rounded-2xl overflow-hidden border border-[#1e1e2e] bg-[#12121a] p-8 group"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/10 via-transparent to-violet-900/10 pointer-events-none" />
       <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-violet-600/5 rounded-full blur-3xl pointer-events-none" />
@@ -40,15 +40,15 @@ export default function ActivityTile() {
         style={{ boxShadow: 'inset 0 0 0 1px rgba(139, 92, 246, 0.3)' }}
       />
 
-      <div className="relative z-10 flex flex-col lg:flex-row gap-6">
+      <div className="relative z-10 flex flex-col lg:flex-row gap-8">
 
         {/* graph section */}
         <div className="flex-1">
-          <h3 className="text-white font-semibold mb-1">Learning Activity</h3>
-          <p className="text-slate-400 text-xs mb-4">Your activity over the last 12 weeks</p>
-          <div className="flex gap-1">
+          <h3 className="text-white font-semibold text-base mb-1">Learning Activity</h3>
+          <p className="text-slate-500 text-xs mb-5">Your activity over the last 12 weeks</p>
+          <div className="flex gap-1.5">
             {activityData.map((week, wi) => (
-              <div key={wi} className="flex flex-col gap-1">
+              <div key={wi} className="flex flex-col gap-1.5">
                 {week.map((day, di) => (
                   <motion.div
                     key={di}
@@ -61,7 +61,7 @@ export default function ActivityTile() {
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 mt-4">
             <span className="text-xs text-slate-500">Less</span>
             {[0,1,2,3,4].map((v) => (
               <div key={v} className={`w-3 h-3 rounded-sm ${intensityClass(v)}`} />
@@ -70,15 +70,18 @@ export default function ActivityTile() {
           </div>
         </div>
 
+        {/* divider */}
+        <div className="hidden lg:block w-px bg-gradient-to-b from-transparent via-[#1e1e2e] to-transparent" />
+
         {/* stats section */}
-        <div className="flex flex-row lg:flex-col justify-between lg:justify-center gap-4 lg:min-w-[160px]">
-          {stats.map(({ icon: Icon, label, value, color }) => (
-            <div key={label} className="flex flex-col gap-1 bg-[#0a0a0f] rounded-xl p-3 border border-[#1e1e2e]">
+        <div className="flex flex-row lg:flex-col justify-between lg:justify-center gap-4 lg:min-w-[180px]">
+          {stats.map(({ icon: Icon, label, value, color, bg }) => (
+            <div key={label} className={`flex flex-col gap-2 rounded-xl p-4 border ${bg}`}>
               <div className="flex items-center gap-2">
                 <Icon className={`w-4 h-4 ${color}`} />
-                <span className="text-xs text-slate-500">{label}</span>
+                <span className="text-xs text-slate-500 font-medium">{label}</span>
               </div>
-              <p className={`text-lg font-bold ${color}`}>{value}</p>
+              <p className={`text-xl font-bold ${color}`}>{value}</p>
             </div>
           ))}
         </div>

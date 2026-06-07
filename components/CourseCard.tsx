@@ -29,6 +29,12 @@ const glowColors = [
   'rgba(59, 130, 246, 0.4)',
 ]
 
+function getStatusLabel(progress: number) {
+  if (progress >= 80) return { emoji: '🔥', text: 'Almost done!' }
+  if (progress >= 50) return { emoji: '⚡', text: 'Halfway there' }
+  return { emoji: '🚀', text: 'Just getting started' }
+}
+
 export default function CourseCard({ course, index }: { course: Course; index: number }) {
   const [displayProgress, setDisplayProgress] = useState(0)
 
@@ -41,13 +47,14 @@ export default function CourseCard({ course, index }: { course: Course; index: n
 
   const gradient = cardGradients[index % cardGradients.length]
   const glow = glowColors[index % glowColors.length]
+  const status = getStatusLabel(course.progress)
 
   return (
     <motion.article
       variants={itemVariants}
       whileHover={{ scale: 1.03, y: -4 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="relative rounded-2xl overflow-hidden border border-[#1e1e2e] bg-[#12121a] p-6 flex flex-col gap-4 group cursor-pointer"
+      className="relative rounded-2xl overflow-hidden border border-[#1e1e2e] bg-[#12121a] p-6 flex flex-col gap-5 group cursor-pointer min-h-[180px]"
     >
       {/* background gradient */}
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient} pointer-events-none`} />
@@ -70,20 +77,20 @@ export default function CourseCard({ course, index }: { course: Course; index: n
       <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none bg-violet-500" />
 
       {/* icon + title */}
-      <div className="relative z-10 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
+      <div className="relative z-10 flex items-center gap-4">
+        <div className="w-11 h-11 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
           {iconMap[course.icon_name] ?? <BookOpen className="w-5 h-5" />}
         </div>
-        <h3 className="text-white font-semibold text-sm leading-tight">{course.title}</h3>
+        <h3 className="text-white font-semibold text-sm leading-snug">{course.title}</h3>
       </div>
 
       {/* progress */}
-      <div className="relative z-10 flex flex-col gap-2 mt-auto">
+      <div className="relative z-10 flex flex-col gap-3 mt-auto">
         <div className="flex justify-between items-center">
-          <span className="text-xs text-slate-400">Progress</span>
-          <span className="text-xs text-violet-400 font-bold">{course.progress}%</span>
+          <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">Progress</span>
+          <span className="text-sm text-violet-400 font-bold">{course.progress}%</span>
         </div>
-        <div className="w-full h-1.5 bg-[#1e1e2e] rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-[#1e1e2e] rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-500"
             initial={{ width: '0%' }}
@@ -91,8 +98,9 @@ export default function CourseCard({ course, index }: { course: Course; index: n
             transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 + index * 0.12 }}
           />
         </div>
-        <p className="text-xs text-slate-500">
-          {course.progress >= 80 ? '🔥 Almost done!' : course.progress >= 50 ? '⚡ Halfway there' : '🚀 Just getting started'}
+        <p className="text-xs text-slate-400 flex items-center gap-1.5">
+          <span>{status.emoji}</span>
+          <span>{status.text}</span>
         </p>
       </div>
     </motion.article>

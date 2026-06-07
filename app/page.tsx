@@ -26,20 +26,29 @@ async function CoursesGrid() {
 
   return (
     <>
-      {data.map((course, index) => (
+      {data.map((course: Course, index: number) => (
         <CourseCard key={course.id} course={course} index={index} />
       ))}
     </>
   )
 }
 
+async function HeroSection() {
+  const supabase = await createSupabaseServerClient()
+  const { count } = await supabase
+    .from('courses')
+    .select('*', { count: 'exact', head: true })
+
+  return <HeroTile courseCount={count ?? 0} />
+}
+
 function CoursesSkeleton() {
   return (
     <>
-      <SkeletonCard className="h-[160px]" />
-      <SkeletonCard className="h-[160px]" />
-      <SkeletonCard className="h-[160px]" />
-      <SkeletonCard className="h-[160px]" />
+      <SkeletonCard className="h-[180px]" />
+      <SkeletonCard className="h-[180px]" />
+      <SkeletonCard className="h-[180px]" />
+      <SkeletonCard className="h-[180px]" />
     </>
   )
 }
@@ -48,21 +57,27 @@ export default function DashboardPage() {
   return (
     <div className="flex min-h-screen bg-[#0a0a0f]">
       <Sidebar />
-      <main className="flex-1 pt-16 pb-24 px-6 md:pt-8 md:pb-8 md:px-10 overflow-y-auto">
+      <main className="flex-1 pt-16 pb-24 px-4 md:pt-10 md:pb-10 md:px-10 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
           <BentoGrid>
-            <HeroTile />
-            <section className="col-span-full">
-              <h2 className="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-3">
+
+            <Suspense fallback={<SkeletonCard className="h-[200px]" />}>
+              <HeroSection />
+            </Suspense>
+
+            <section className="col-span-full flex flex-col gap-4">
+              <h2 className="text-slate-400 text-xs font-semibold uppercase tracking-widest px-1">
                 Active Courses
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
                 <Suspense fallback={<CoursesSkeleton />}>
                   <CoursesGrid />
                 </Suspense>
               </div>
             </section>
+
             <ActivityTile />
+
           </BentoGrid>
         </div>
       </main>
