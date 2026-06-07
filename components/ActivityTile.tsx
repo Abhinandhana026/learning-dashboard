@@ -35,7 +35,7 @@ const intensityColor = (value: number): string => {
 const stats = [
   { icon: Zap,    label: 'Current Streak', value: '12 days', color: '#f97316', bg: 'rgba(249,115,22,0.1)',  border: 'rgba(249,115,22,0.2)'  },
   { icon: Target, label: 'Lessons Done',   value: '84',      color: '#7c5cfc', bg: 'rgba(124,92,252,0.1)',  border: 'rgba(124,92,252,0.2)'  },
-  { icon: Award,  label: 'Certificates',   value: '3',       color: '#22d3ee', bg: 'rgba(34,211,238,0.1)', border: 'rgba(34,211,238,0.2)'  },
+  { icon: Award,  label: 'Certificates',   value: '3',       color: '#22d3ee', bg: 'rgba(34,211,238,0.1)',  border: 'rgba(34,211,238,0.2)'  },
 ]
 
 export default function ActivityTile() {
