@@ -1,5 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --bg-base: #060608;
   --bg-surface: #0e0e14;
@@ -8,7 +10,6 @@
   --border: #1f1f2e;
   --border-bright: #2a2a3e;
   --violet: #7c5cfc;
-  --violet-dim: #4f3a9e;
   --indigo: #5b8df6;
   --pink: #e040b5;
   --cyan: #22d3ee;
@@ -17,47 +18,17 @@
   --text-muted: #44445a;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg-base);
   color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
 }
 
 .font-display {
   font-family: 'Syne', sans-serif;
-}
-
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html,
-body {
-  background-color: #0a0a0f;
-  color: #e2e8f0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0a0a0f;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #2d2d3d;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #4a4a6a;
 }

@@ -1,8 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import type { Variants } from 'framer-motion'
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -11,25 +12,23 @@ const containerVariants = {
   },
 }
 
-const itemVariants = {
+export const itemVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 300,
       damping: 24,
     },
   },
 }
 
-export { itemVariants }
-
 export default function BentoGrid({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-6"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

@@ -18,11 +18,11 @@ export default function HeroTile({ courseCount = 0 }: { courseCount?: number }) 
     <motion.article
       variants={itemVariants}
       whileHover={{ scale: 1.008 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="relative rounded-3xl overflow-hidden border border-[#1f1f2e] bg-[#16161f] p-8 md:p-10 group"
-      style={{ minHeight: '220px' }}
+      transition={{ type: 'spring' as const, stiffness: 300, damping: 20 }}
+      className="relative rounded-3xl overflow-hidden border border-[#1f1f2e] p-8 md:p-10 group"
+      style={{ background: '#16161f', minHeight: '220px' }}
     >
-      {/* animated mesh background */}
+      {/* mesh background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-20"
           style={{ background: 'radial-gradient(circle, #7c5cfc 0%, transparent 70%)' }} />
@@ -30,11 +30,10 @@ export default function HeroTile({ courseCount = 0 }: { courseCount?: number }) 
           style={{ background: 'radial-gradient(circle, #5b8df6 0%, transparent 70%)' }} />
         <div className="absolute top-1/2 left-1/3 w-64 h-64 rounded-full opacity-10"
           style={{ background: 'radial-gradient(circle, #e040b5 0%, transparent 70%)' }} />
-        {/* grid pattern overlay */}
         <div className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: 'linear-gradient(#7c5cfc 1px, transparent 1px), linear-gradient(90deg, #7c5cfc 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
+            backgroundSize: '40px 40px',
           }} />
       </div>
 
@@ -43,13 +42,18 @@ export default function HeroTile({ courseCount = 0 }: { courseCount?: number }) 
         style={{ boxShadow: 'inset 0 0 0 1px rgba(124, 92, 252, 0.5)' }} />
 
       <div className="relative z-10 flex flex-col gap-6">
+
+        {/* greeting + name */}
         <div className="flex items-start justify-between gap-6">
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <span className="text-lg">{greeting.emoji}</span>
-              <span className="text-[#8888aa] text-sm font-medium tracking-wide">{greeting.text}</span>
+              <span className="text-sm font-medium tracking-wide" style={{ color: '#8888aa' }}>
+                {greeting.text}
+              </span>
             </div>
-            <h1 className="font-display text-4xl md:text-5xl font-800 text-[#f0f0ff] tracking-tight leading-none">
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-tight leading-none"
+              style={{ color: '#f0f0ff' }}>
               Welcome back,{' '}
               <span style={{
                 background: 'linear-gradient(135deg, #7c5cfc 0%, #e040b5 50%, #5b8df6 100%)',
@@ -60,20 +64,24 @@ export default function HeroTile({ courseCount = 0 }: { courseCount?: number }) 
                 Abhi
               </span>
             </h1>
-            <p className="text-[#8888aa] text-sm leading-relaxed max-w-md">
+            <p className="text-sm leading-relaxed max-w-md" style={{ color: '#8888aa' }}>
               You&apos;re on a roll — keep pushing and finish strong today.
             </p>
           </div>
 
           {/* level badge */}
-          <div className="shrink-0 flex flex-col items-center justify-center w-18 h-18 rounded-2xl border border-[#2a2a3e] gap-1 px-4 py-3"
+          <div className="shrink-0 flex flex-col items-center justify-center rounded-2xl border border-[#2a2a3e] px-5 py-4 gap-1"
             style={{ background: 'linear-gradient(135deg, rgba(124,92,252,0.15), rgba(91,141,246,0.15))' }}>
-            <span className="font-display text-2xl font-bold text-[#7c5cfc]">7</span>
-            <span className="text-[10px] text-[#8888aa] uppercase tracking-widest font-medium">Level</span>
+            <span className="font-display text-3xl font-bold" style={{ color: '#7c5cfc' }}>7</span>
+            <span className="text-[10px] uppercase tracking-widest font-medium" style={{ color: '#8888aa' }}>Level</span>
           </div>
         </div>
 
-        {/* stats pills */}
+        {/* divider */}
+        <div className="h-px"
+          style={{ background: 'linear-gradient(90deg, rgba(124,92,252,0.3), rgba(91,141,246,0.3), transparent)' }} />
+
+        {/* stat pills */}
         <div className="flex flex-wrap gap-3">
           {[
             { icon: Flame, label: '12 Day Streak', color: '#f97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.25)' },
@@ -88,6 +96,7 @@ export default function HeroTile({ courseCount = 0 }: { courseCount?: number }) 
             </div>
           ))}
         </div>
+
       </div>
     </motion.article>
   )
